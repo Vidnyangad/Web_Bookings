@@ -159,6 +159,7 @@ class APT_Scanner {
     }
 
     public function ajax_scan_ticket() {
+        ob_clean(); // Clear any notices from other plugins/core to prevent JSON corruption
         check_ajax_referer( 'apt_scanner_nonce', 'nonce' );
 
         // Ensure user is logged in
@@ -215,6 +216,7 @@ class APT_Scanner {
         wp_send_json_success( $msg );
     }
     public function ajax_get_orders_for_date() {
+        ob_clean(); // Clear any notices from other plugins/core to prevent JSON corruption
         check_ajax_referer( 'apt_scanner_nonce', 'nonce' );
 
         if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
@@ -261,6 +263,7 @@ class APT_Scanner {
         wp_send_json_success( $results );
     }
     public function ajax_get_calendar_events() {
+        ob_clean(); // Clear any notices from other plugins/core to prevent JSON corruption
         check_ajax_referer( 'apt_scanner_nonce', 'nonce' );
 
         if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
