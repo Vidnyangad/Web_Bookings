@@ -1,0 +1,74 @@
+.apt-booking-widget {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    margin: 0 auto;
+    font-family: sans-serif;
+}
+
+.apt-ticket-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.apt-ticket-row input[type="number"] {
+    width: 60px;
+}
+
+.apt-btn {
+    background-color: #0073aa;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.apt-btn:hover {
+    background-color: #005177;
+}
+
+.apt-btn-secondary {
+    background-color: #666;
+}
+
+.apt-btn-secondary:hover {
+    background-color: #444;
+}
+
+.apt-slot-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.apt-slot-btn {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.apt-slot-btn.selected {
+    background: #0073aa;
+    color: white;
+    border-color: #0073aa;
+}
+
+.apt-slot-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #eee;
+}
+
+.apt-error {
+    color: #d63638;
+}
+
+.apt-success {
+    color: #00a32a;
+}
