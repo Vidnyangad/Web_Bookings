@@ -160,6 +160,7 @@ class APT_Scanner {
 
     public function ajax_scan_ticket() {
         while ( ob_get_level() > 0 ) { ob_end_clean(); } // Aggressively clear all buffers to prevent JSON corruption
+        @ini_set( 'display_errors', 0 ); // Prevent shutdown hooks from appending notices to our JSON
         check_ajax_referer( 'apt_scanner_nonce', 'nonce' );
 
         // Ensure user is logged in
@@ -217,6 +218,7 @@ class APT_Scanner {
     }
     public function ajax_get_orders_for_date() {
         while ( ob_get_level() > 0 ) { ob_end_clean(); } // Aggressively clear all buffers to prevent JSON corruption
+        @ini_set( 'display_errors', 0 ); // Prevent shutdown hooks from appending notices to our JSON
         check_ajax_referer( 'apt_scanner_nonce', 'nonce' );
 
         if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
@@ -264,6 +266,7 @@ class APT_Scanner {
     }
     public function ajax_get_calendar_events() {
         while ( ob_get_level() > 0 ) { ob_end_clean(); } // Aggressively clear all buffers to prevent JSON corruption
+        @ini_set( 'display_errors', 0 ); // Prevent shutdown hooks from appending notices to our JSON
         check_ajax_referer( 'apt_scanner_nonce', 'nonce' );
 
         if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {

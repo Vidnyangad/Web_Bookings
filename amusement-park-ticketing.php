@@ -14,6 +14,12 @@ define( 'APT_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APT_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'APT_VERSION', '1.4.2' );
 
+// Start an output buffer early to trap any notices from other plugins/themes
+// during AJAX initialization, before our endpoints even execute.
+if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+    ob_start();
+}
+
 // Include necessary files
 require_once APT_PLUGIN_DIR . 'includes/class-apt-admin.php';
 require_once APT_PLUGIN_DIR . 'includes/class-apt-frontend.php';

@@ -154,6 +154,7 @@ class APT_WooCommerce {
 
     public function ajax_check_availability() {
         while ( ob_get_level() > 0 ) { ob_end_clean(); } // Aggressively clear all buffers to prevent JSON corruption
+        @ini_set( 'display_errors', 0 ); // Prevent shutdown hooks from appending notices to our JSON
         check_ajax_referer( 'apt_frontend_nonce', 'nonce' );
 
         $date = sanitize_text_field( $_POST['date'] );
@@ -187,6 +188,7 @@ class APT_WooCommerce {
 
     public function ajax_book_tickets() {
         while ( ob_get_level() > 0 ) { ob_end_clean(); } // Aggressively clear all buffers to prevent JSON corruption
+        @ini_set( 'display_errors', 0 ); // Prevent shutdown hooks from appending notices to our JSON
         check_ajax_referer( 'apt_frontend_nonce', 'nonce' );
 
         $date = sanitize_text_field( $_POST['date'] );
