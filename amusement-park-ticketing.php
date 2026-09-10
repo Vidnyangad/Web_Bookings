@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Amusement Park Ticketing
  * Description: Online ticketing and booking system for an amusement park, integrating with WooCommerce.
- * Version: 1.5.0
+ * Version: 1.4.2
  * Author: Jules
  */
 
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'APT_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APT_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'APT_VERSION', '1.5.0' );
+define( 'APT_VERSION', '1.4.2' );
 
 // Start an output buffer early to trap any notices from other plugins/themes
 // during AJAX initialization, before our endpoints even execute.
