@@ -54,7 +54,7 @@ class APT_Scanner {
 
     public function scanner_shortcode() {
         // Only allow logged in users (staff)
-        if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
+        if ( ! is_user_logged_in() || ! current_user_can( 'edit_pages' ) ) {
             return '<p>Please log in to access the scanner.</p>';
         }
 
@@ -164,7 +164,7 @@ class APT_Scanner {
         check_ajax_referer( 'apt_scanner_nonce', 'nonce' );
 
         // Ensure user is logged in
-        if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
+        if ( ! is_user_logged_in() || ! current_user_can( 'edit_pages' ) ) {
             wp_send_json_error( 'Unauthorized.' );
         }
 
@@ -221,7 +221,7 @@ class APT_Scanner {
         @ini_set( 'display_errors', 0 ); // Prevent shutdown hooks from appending notices to our JSON
         check_ajax_referer( 'apt_scanner_nonce', 'nonce' );
 
-        if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
+        if ( ! is_user_logged_in() || ! current_user_can( 'edit_pages' ) ) {
             wp_send_json_error( 'Unauthorized.' );
         }
 
@@ -269,7 +269,7 @@ class APT_Scanner {
         @ini_set( 'display_errors', 0 ); // Prevent shutdown hooks from appending notices to our JSON
         check_ajax_referer( 'apt_scanner_nonce', 'nonce' );
 
-        if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
+        if ( ! is_user_logged_in() || ! current_user_can( 'edit_pages' ) ) {
             wp_send_json_error( 'Unauthorized.' );
         }
 
