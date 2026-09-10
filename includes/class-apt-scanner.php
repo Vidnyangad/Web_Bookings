@@ -165,11 +165,13 @@ class APT_Scanner {
 
         // Ensure user is logged in
         if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
+            remove_all_actions( 'shutdown' );
             wp_send_json_error( 'Unauthorized.' );
         }
 
         $pnr = isset($_POST['pnr']) ? sanitize_text_field(strtoupper($_POST['pnr'])) : '';
         if ( empty($pnr) ) {
+            remove_all_actions( 'shutdown' );
             wp_send_json_error( 'No PNR received.' );
         }
 
@@ -179,10 +181,12 @@ class APT_Scanner {
         $ticket = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_tickets WHERE pnr = %s", $pnr) );
 
         if ( !$ticket ) {
+            remove_all_actions( 'shutdown' );
             wp_send_json_error( 'Ticket not found in database for PNR: ' . esc_html($pnr) );
         }
 
         if ( $ticket->status === 'used' ) {
+            remove_all_actions( 'shutdown' );
             wp_send_json_error( 'Ticket has already been USED on ' . date('Y-m-d H:i:s', strtotime($ticket->checkin_time)) );
         }
 
@@ -190,7 +194,8 @@ class APT_Scanner {
         $today = current_time('Y-m-d');
         if ( $ticket->visit_date !== $today ) {
             // Depending on policy, you might want to allow early/late or reject
-            // wp_send_json_error( 'Ticket is valid, but is for a different date: ' . $ticket->visit_date );
+            // remove_all_actions( 'shutdown' );
+            wp_send_json_error( 'Ticket is valid, but is for a different date: ' . $ticket->visit_date );
         }
 
         // Mark as used
@@ -214,7 +219,8 @@ class APT_Scanner {
             $ticket->infant_qty
         );
 
-        wp_send_json_success( $msg );
+        remove_all_actions( 'shutdown' );
+            wp_send_json_success( $msg );
     }
     public function ajax_get_orders_for_date() {
         while ( ob_get_level() > 0 ) { ob_end_clean(); } // Aggressively clear all buffers to prevent JSON corruption
@@ -222,11 +228,13 @@ class APT_Scanner {
         check_ajax_referer( 'apt_scanner_nonce', 'nonce' );
 
         if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
+            remove_all_actions( 'shutdown' );
             wp_send_json_error( 'Unauthorized.' );
         }
 
         $date = isset($_POST['date']) ? sanitize_text_field($_POST['date']) : '';
         if ( empty($date) ) {
+            remove_all_actions( 'shutdown' );
             wp_send_json_error( 'No date provided.' );
         }
 
@@ -262,7 +270,8 @@ class APT_Scanner {
             );
         }
 
-        wp_send_json_success( $results );
+        remove_all_actions( 'shutdown' );
+            wp_send_json_success( $results );
     }
     public function ajax_get_calendar_events() {
         while ( ob_get_level() > 0 ) { ob_end_clean(); } // Aggressively clear all buffers to prevent JSON corruption
@@ -270,10 +279,12 @@ class APT_Scanner {
         check_ajax_referer( 'apt_scanner_nonce', 'nonce' );
 
         if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
+            remove_all_actions( 'shutdown' );
             wp_send_json_error( 'Unauthorized.' );
         }
 
-        wp_send_json_success( $this->get_calendar_events() );
+        remove_all_actions( 'shutdown' );
+            wp_send_json_success( $this->get_calendar_events() );
     }
 }
 new APT_Scanner();

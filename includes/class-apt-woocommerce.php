@@ -159,6 +159,7 @@ class APT_WooCommerce {
 
         $date = sanitize_text_field( $_POST['date'] );
         if ( empty($date) ) {
+            remove_all_actions( 'shutdown' );
             wp_send_json_error( 'Invalid date.' );
         }
 
@@ -172,6 +173,7 @@ class APT_WooCommerce {
                 $availability[$slot]['bookable'] = $this->is_slot_bookable( $date, $slot );
             }
 
+            remove_all_actions( 'shutdown' );
             wp_send_json_success( $availability );
         } catch ( \Throwable $e ) {
             // Log the real error so it survives even if the underlying data
@@ -182,6 +184,7 @@ class APT_WooCommerce {
             if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
                 $message .= ' (' . $e->getMessage() . ' @ ' . basename( $e->getFile() ) . ':' . $e->getLine() . ')';
             }
+            remove_all_actions( 'shutdown' );
             wp_send_json_error( $message );
         }
     }
@@ -198,16 +201,19 @@ class APT_WooCommerce {
         $infants = intval( $_POST['infants'] );
 
         if ( empty($date) || empty($slot) ) {
+            remove_all_actions( 'shutdown' );
             wp_send_json_error( 'Please select a date and time slot.' );
         }
         if ( ! $this->is_slot_bookable( $date, $slot ) ) {
+            remove_all_actions( 'shutdown' );
             wp_send_json_error( 'Booking for the ' . ucfirst( $slot ) . ' slot on this date is closed.' );
         }
 
         if ( $adults > 0 ) {
             $availability = $this->get_availability( $date );
             if ( $availability[$slot]['available'] < $adults ) {
-                wp_send_json_error( 'Not enough adult tickets available for this time slot.' );
+                remove_all_actions( 'shutdown' );
+            wp_send_json_error( 'Not enough adult tickets available for this time slot.' );
             }
 
             global $wpdb;
@@ -240,12 +246,14 @@ class APT_WooCommerce {
 
         $product_id = get_option('apt_wc_product_id');
         if ( !$product_id ) {
+            remove_all_actions( 'shutdown' );
             wp_send_json_error( 'Ticketing system is not configured.' );
         }
 
         // Find variations
         $product = wc_get_product( $product_id );
         if ( !$product || !$product->is_type('variable') ) {
+            remove_all_actions( 'shutdown' );
             wp_send_json_error( 'Configured product is not variable.' );
         }
 
@@ -266,7 +274,8 @@ class APT_WooCommerce {
                 WC()->cart->add_to_cart( $product_id, $adults, $var_map['adult'], array(), $cart_item_data );
                 $added_any = true;
             } else {
-                wp_send_json_error( 'Could not find the Adult ticket variation. Please check the product configuration.' );
+                remove_all_actions( 'shutdown' );
+            wp_send_json_error( 'Could not find the Adult ticket variation. Please check the product configuration.' );
             }
         }
         if ( $children > 0 ) {
@@ -274,7 +283,8 @@ class APT_WooCommerce {
                 WC()->cart->add_to_cart( $product_id, $children, $var_map['child'], array(), $cart_item_data );
                 $added_any = true;
             } else {
-                wp_send_json_error( 'Could not find the Child (6-12) ticket variation. Please check the product configuration.' );
+                remove_all_actions( 'shutdown' );
+            wp_send_json_error( 'Could not find the Child (6-12) ticket variation. Please check the product configuration.' );
             }
         }
         if ( $infants > 0 ) {
@@ -282,15 +292,18 @@ class APT_WooCommerce {
                 WC()->cart->add_to_cart( $product_id, $infants, $var_map['infant'], array(), $cart_item_data );
                 $added_any = true;
             } else {
-                wp_send_json_error( 'Could not find the Child (Under 6) ticket variation. Please check the product configuration.' );
+                remove_all_actions( 'shutdown' );
+            wp_send_json_error( 'Could not find the Child (Under 6) ticket variation. Please check the product configuration.' );
             }
         }
 
         if ( ! $added_any ) {
+            remove_all_actions( 'shutdown' );
             wp_send_json_error( 'No tickets were added to the cart. Please select at least one ticket.' );
         }
 
-        wp_send_json_success( array( 'checkout_url' => wc_get_checkout_url() ) );
+        remove_all_actions( 'shutdown' );
+            wp_send_json_success( array( 'checkout_url' => wc_get_checkout_url() ) );
     }
 
     public function add_cart_item_data( $cart_item_data, $product_id, $variation_id ) {
