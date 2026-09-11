@@ -66,6 +66,13 @@ jQuery(document).ready(function($) {
             },
             dateClick: function(info) {
                 fetchOrdersForDate(info.dateStr);
+            },
+            eventClick: function(info) {
+                var slot = info.event.extendedProps.slot;
+                var dateStr = info.event.startStr;
+
+                // Fetch orders for the date
+                fetchOrdersForDate(dateStr, slot);
             }
         });
         calendar.render();
@@ -99,7 +106,7 @@ jQuery(document).ready(function($) {
         });
     }
 
-    function fetchOrdersForDate(dateStr) {
+    function fetchOrdersForDate(dateStr, slotToSelect) {
         $('#apt-selected-date').text(dateStr);
         $('#apt-order-details').show();
         $('.apt-tab-content').html('<p>Loading orders...</p>');
@@ -117,6 +124,14 @@ jQuery(document).ready(function($) {
                     renderOrdersTable('morning', response.data.morning);
                     renderOrdersTable('afternoon', response.data.afternoon);
                     renderOrdersTable('evening', response.data.evening);
+
+                    if (slotToSelect) {
+                        $('.apt-tab-btn').removeClass('active');
+                        $('.apt-tab-btn[data-tab="' + slotToSelect + '"]').addClass('active');
+
+                        $('.apt-tab-content').hide().removeClass('active');
+                        $('#tab-' + slotToSelect).show().addClass('active');
+                    }
                 } else {
                     $('.apt-tab-content').html('<p>Error loading orders: ' + response.data + '</p>');
                 }

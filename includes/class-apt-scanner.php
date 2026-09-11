@@ -32,7 +32,10 @@ class APT_Scanner {
                 'title' => ucfirst($row->time_slot) . ': ' . $row->adult_booked . ' booked',
                 'start' => $row->visit_date,
                 'color' => ($row->time_slot == 'morning') ? '#ff9f89' : (($row->time_slot == 'afternoon') ? '#89c4ff' : '#8c8c8c'),
-                'allDay' => true
+                'allDay' => true,
+                'extendedProps' => array(
+                    'slot' => $row->time_slot
+                )
             );
         }
         return $events;
@@ -98,9 +101,18 @@ class APT_Scanner {
                 padding: 10px;
                 border-radius: 5px;
             }
-            .fc-event { font-size: 0.85em; padding: 2px; }
-            .apt-tabs { display: flex; border-bottom: 1px solid #ccc; margin-bottom: 10px; }
-            .apt-tab-btn { background: #eee; border: 1px solid #ccc; border-bottom: none; padding: 8px 16px; cursor: pointer; }
+            .fc-event { font-size: 0.85em; padding: 2px; cursor: pointer; }
+            /* Make day cells themselves clickable */
+            .fc-daygrid-day-frame { cursor: pointer; }
+            /* Fix FullCalendar zoom/overflow issues */
+            .fc-view-harness { min-height: 400px; }
+            .fc-scrollgrid { width: 100% !important; }
+            .fc-toolbar-title { font-size: 1.2em !important; }
+            @media (max-width: 768px) {
+                .fc-toolbar { flex-direction: column; gap: 10px; }
+            }
+            .apt-tabs { display: flex; border-bottom: 1px solid #ccc; margin-bottom: 10px; flex-wrap: wrap; }
+            .apt-tab-btn { background: #eee; border: 1px solid #ccc; border-bottom: none; padding: 8px 16px; cursor: pointer; flex-grow: 1; text-align: center; }
             .apt-tab-btn.active { background: #fff; border-top: 2px solid #0073aa; font-weight: bold; }
             .apt-orders-table-wrapper { width: 100%; overflow-x: auto; }
             .apt-orders-table { width: 100%; min-width: 700px; table-layout: fixed; border-collapse: collapse; }
